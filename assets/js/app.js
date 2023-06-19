@@ -1,6 +1,12 @@
 //3.1 Definimos constante global con la url base a consumir
 const URL_BASE = "https://swapi.dev/api/"
 
+//8.1 Variables globales para manipular DOM
+
+let rojo = document.getElementById("numeroRojo")
+let verde = document.getElementById("numeroVerde")
+let azul = document.getElementById("numeroAzul")
+
 //1- Definir Clase consrtructura
 class Personaje {
     constructor(nombre, estatura, peso, fila) {
@@ -19,7 +25,7 @@ class Personaje {
                     <div class="timeline-icon ${color}"></div>
                     <div class="timeline-text">
                         <h6>${this.nombre}</h6>
-                        <p>Estatura: ${this.estatura} mts</p>
+                        <p>Estatura: ${this.estatura} cms</p>
                         <p>Peso: ${this.peso} kg </p>
                     </div>
                 </div>
@@ -50,16 +56,84 @@ const traerPersonaje = async(id, fila, color) => {
 
 //4. Función Generadora
 
-function * generadorPersonaje(id) {
-    yield traerPersonaje(id);
+function * generadorPersonaje(id, fila, color) {
+    yield traerPersonaje(id, fila, color);
     id++
-    yield traerPersonaje(id);
+    yield traerPersonaje(id, fila, color);
     id++
-    yield traerPersonaje(id);
+    yield traerPersonaje(id, fila, color);
     id++
-    yield traerPersonaje(id);
+    yield traerPersonaje(id, fila, color);
     id++
-    yield traerPersonaje(id);
+    yield traerPersonaje(id, fila, color);
     id++
 }
 
+//6. generar variables con generador
+
+let generadorRojo = generadorPersonaje(1, "filaRojo", "rojo")
+let generadorVerde = generadorPersonaje(6, "filaVerde", "verde")
+let generadorAzul = generadorPersonaje(11, "filaAzul", "azul")
+
+//7. Función que acciona los generadores
+/* const listaGenerador = async (generador) => {
+    let data = generador.next()
+
+  Funciona, pero no es la mejor opción por buena practica   
+    if(data.done){
+        alert("no hay más personaje")
+    }else{
+        data.value
+    } 
+
+    if(!data.done){
+        data.value
+    }else{
+        alert("no hay más personaje")
+    }
+} */
+
+//8 cargar elementos en el DOM
+rojo.addEventListener("click", async () => {
+    let data = generadorRojo.next()
+
+    /*
+    Las más fácil pero la peor vista. Porque verifica estado final y no estado actual de la función
+
+    if(data.done){
+        alert("no hay más personajes")
+    }else{
+        data.value
+    }
+
+    */
+
+    /*
+    Mejor vista en el medio porque verifica el estado actual
+
+    if(!data.done){
+        data.value
+    }else{
+        alet("no hay más personajes")
+    }
+
+    */
+
+    /*Operador ternario = verifico si el dato es verdadero. Todo lo que viene luego del ? corresponde a lo que hay que hacer
+     si la condición es verdadera. Y luego, se pone un : todo lo que viene despues es lo que se hace si la condición es falsa*/
+    !data.done ? data.value : alert("no hay más personaje")
+})
+
+verde.addEventListener("click", async () => {
+    let data = generadorVerde.next()
+    !data.done ? data.value : alert("no hay más personaje")
+})
+
+azul.addEventListener("click", async () => {
+    let data = generadorAzul.next()
+    !data.done ? data.value : alert("no hay más personaje")
+})
+
+
+/* verde.addEventListener("click",listaGenerador(generadorVerde))
+azul.addEventListener("click",listaGenerador(generadorAzul)) */
