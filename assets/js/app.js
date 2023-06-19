@@ -48,7 +48,6 @@ const traerPersonaje = async(id, fila, color) => {
         let respuesta = await resultado.json();
         let personaje = crearPersonaje(respuesta, fila)
         personaje.cargarTarjeta(color)
-        console.log(personaje)
     }catch (err){
         throw new Error (err)
     }
@@ -134,6 +133,3 @@ azul.addEventListener("click", async () => {
     !data.done ? data.value : alert("no hay más personaje")
 })
 
-
-/* verde.addEventListener("click",listaGenerador(generadorVerde))
-azul.addEventListener("click",listaGenerador(generadorAzul)) */
