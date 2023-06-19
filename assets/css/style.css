@@ -23,6 +23,12 @@ body {
 .azul {
     background-color: cyan;
 }
+
+.eventoClick{
+    cursor: pointer;
+}
+
+
 @media only screen and (max-width: 575px) {
     .single-timeline-area {
         padding-left: 100px;
